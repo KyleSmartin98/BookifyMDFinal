@@ -7,31 +7,25 @@
           <img src="../assets/Icon-3.png" alt="Doctor Icon">
          </div>
          <!--end-generic-->
-          <patient-appointments/>
+          <doctor-schedule v-if="this.currentUserType"/>
+          <patient-appointments v-if="!this.currentUserType"/>
     </div>
 </template>
 
 <script>
 import appointmentService from '@/services/AppointmentService'
 import PatientAppointments from '@/components/PatientAppointments'
+import DoctorSchedule from '@/components/DoctorSchedule'
 
 export default {
 data() {
     return {
-      //notifications:[],
       appointments:[]
-        // {
-        // alert: "Delay",
-        // date: "05/01/22",
-        // time: "1600",
-        // doctor: "Naval Poindexter",
-        // facility: "Presbyterian",
-        // Location: "1001 Spruce St",
-        // Description: "Spinal Tap"
     }
   },
   components:{
-    PatientAppointments
+    PatientAppointments, 
+    DoctorSchedule
   },
   computed:{
     currentUser(){
@@ -46,7 +40,7 @@ data() {
   }, 
   mounted(){
     if(this.currentUserType){
-      appointmentService.getAppointmentByDoctorId(this.currentUser.id)
+      appointmentService.getAppointmentByDoctorId(this.currentUserProfile.doctorId)
       .then((response)=>{
         if(response.status==200){
           this.appointments = response.data
@@ -55,7 +49,7 @@ data() {
         }
       })
     }else{
-      appointmentService.getAppointmentByPatientId(this.currentUser.id)
+      appointmentService.getAppointmentByPatientId(this.currentUserProfile.patientId)
       .then((response)=>{
         if(response.status==200){
           this.appointments = response.data
