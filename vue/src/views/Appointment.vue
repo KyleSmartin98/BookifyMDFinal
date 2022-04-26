@@ -10,9 +10,9 @@
   
   <section class="appointment-body elevated-box">  
     
-    <doctor-schedule v-if="user.role==='doctor'"/>
+    <doctor-schedule v-if="this.currentUserType"/>
 
-    <patient-appointments v-if="user.role==='patient'"/>
+    <patient-appointments v-if="!this.currentUserType"/>
 
   </section>
 
@@ -32,7 +32,18 @@ export default {
           role: "patient"
         }
       }
-    }
+    },
+    computed:{
+        currentUser(){
+            return this.$store.state.user
+            },
+        currentUserType(){
+            return this.$store.state.profileType.isDoctor;
+        },
+        currentUserProfile(){
+            return this.$store.state.profile;
+        },
+    },
 }
 
 </script>
