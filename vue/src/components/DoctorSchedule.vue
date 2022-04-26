@@ -1,24 +1,15 @@
 <template>
-  <div class="doc-sched-container">
+  <div class="app-table">
       <table>
-        <tbody v-for="appointment in appointments" :key=appointment>
-          <tr>
+        <tbody v-for="appointment in appointments" :key="appointment.id">
+          <tr class="tr">
             <td>{{appointment.appointmentDate}}</td>
-          </tr>
-          <tr>
-            <td>{{appointment.time}}</td>
-          </tr>
-          <tr>
-            <td>{{appointment.location}}</td>
-          </tr>
-          <tr>
-            <td>{{appointment.patient}}</td>
-          </tr>
-          <tr>
+            <br>
+            <td>{{appointment.startTime}}</td>
+            <br>
+            <td>{{appointment.officeName}}</td>
+            <br>
             <td>{{appointment.description}}</td>
-          </tr>
-          <tr>
-            <td></td>
           </tr>
         </tbody>
       </table>
@@ -77,7 +68,7 @@ export default {
             return this.$store.state.user
             },
         currentUserType(){
-            return this.$store.profileType.isDoctor;
+            return this.$store.state.profileType.isDoctor;
         },
         currentUserProfile(){
             return this.$store.state.profile;
@@ -85,7 +76,7 @@ export default {
     },
   mounted(){
     //Load Appointments 
-    appointmentService.getAppointmentByDoctorId(this.$store.profile.id)
+    appointmentService.getAppointmentByDoctorId(this.$store.state.profile.doctorId)
     .then(response =>{
       this.appointments = response.data
     }).catch(error => {
@@ -98,7 +89,15 @@ export default {
 </script>
 
 <style>
-.doc-sched-container{
-  
+.app-table{
+  padding: 10px 30px 10px 20px;
+  border: 1px solid;
+  width: 100%;
+  align-content: center;
+ 
+
+}
+.tr{
+  height: 1.8em;
 }
 </style>
